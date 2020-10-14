@@ -6,3 +6,5 @@ This project has been created in Google Chrome.
 
 - install all dependencies (npm install)
 - run the application (ng serve --open)
+- play 😁
+
