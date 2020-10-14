@@ -1,0 +1,197 @@
+import { ActivatedRoute } from '@angular/router';
+import { Component, OnInit, Renderer2 } from '@angular/core';
+
+import { QuizService } from '../../services/quiz.service';
+import { LoggerService } from '../../services/logger.service';
+import {
+    Option,
+    Question,
+    Quiz,
+    QuizConfig,
+    QuizPath,
+} from '../../models/index';
+
+import {
+    IconDefinition,
+    faAngleLeft,
+    faAngleRight,
+    faAngleDoubleLeft,
+    faAngleDoubleRight,
+    faCheck,
+    faTimes,
+} from '@fortawesome/free-solid-svg-icons';
+
+enum Mode {
+    'quiz',
+    'result',
+    'review',
+}
+
+@Component({
+    selector: 'app-quiz',
+    templateUrl: './quiz.component.html',
+    styleUrls: ['./quiz.component.scss'],
+})
+export class QuizComponent implements OnInit {
+    faCheck: IconDefinition = faCheck;
+    faTimes: IconDefinition = faTimes;
+    faAngleLeft: IconDefinition = faAngleLeft;
+    faAngleRight: IconDefinition = faAngleRight;
+    faAngleDoubleLeft: IconDefinition = faAngleDoubleLeft;
+    faAngleDoubleRight: IconDefinition = faAngleDoubleRight;
+
+    quizes: QuizPath[];
+    Mode = Mode;
+    mode: Mode = Mode.quiz;
+    quizPath: string;
+    quizColor: string;
+    quiz: Quiz = new Quiz(null);
+    config: QuizConfig = {
+        allowBack: true,
+        allowReview: true,
+        autoMove: false,
+        duration: 120,
+        pageSize: 1,
+        requiredAll: false,
+        richText: false,
+        shuffleQuestions: false,
+        shuffleOptions: false,
+        showClock: false,
+        showPager: true,
+        theme: 'none',
+    };
+    pager = {
+        index: 0,
+        size: 1,
+        count: 1,
+    };
+    timer: any = null;
+    startTime: Date;
+    ellapsedTime: string = '00:00';
+    duration: string = '';
+
+    constructor(
+        private quizService: QuizService,
+        private logger: LoggerService,
+        private route: ActivatedRoute,
+        private renderer: Renderer2,
+    ) {
+        this.renderer.removeClass(document.body, 'dashboard-background');
+    }
+
+    ngOnInit() {
+        const quizId = this.route.snapshot.params['id'];
+
+        this.quizes = this.quizService.getAll();
+        this.quizPath = this.quizes[quizId].id;
+
+        this.loadQuiz(this.quizPath);
+    }
+
+    loadQuiz(quizPath: string): void {
+        this.quizService.get(quizPath).subscribe((data: Quiz) => {
+            this.quiz = new Quiz(data);
+
+            this.pager.count = this.quiz.questions.length;
+            this.startTime = new Date();
+            this.timer = setInterval(() => {
+                this.tick();
+            }, 1000);
+
+            this.duration = this.parseTime(this.config.duration);
+            this.quizColor = `-${
+                this.quiz && this.quiz.name.toLowerCase().replace('.', '-')
+            }`;
+        });
+
+        this.mode = 0;
+    }
+
+    getImagePath(quizPath: string): string {
+        const image = quizPath && quizPath.toLowerCase();
+
+        if (image) {
+            return `../../assets/images/${image}.png`;
+        }
+
+        return '';
+    }
+
+    onSelect(question: Question, option: Option): void {
+        if (question.questionTypeId === 1) {
+            question.options.forEach((x) => {
+                if (x.id !== option.id) {
+                    x.selected = false;
+                }
+            });
+        }
+
+        if (this.config.autoMove) {
+            this.goTo(this.pager.index + 1);
+        }
+    }
+
+    goTo(index: number): void {
+        if (index >= 0 && index < this.pager.count) {
+            this.pager.index = index;
+            this.mode = 0;
+        }
+    }
+
+    isAnswered(question: Question): string {
+        return question.options.find((x) => x.selected)
+            ? 'Answered'
+            : 'Not Answered';
+    }
+
+    isCorrect(question: Question): string {
+        return question.options.every((x) => x.selected === x.isAnswer)
+            ? 'correct'
+            : 'wrong';
+    }
+
+    onSubmit(): void {
+        const answers = [];
+
+        this.quiz.questions.forEach((x) =>
+            answers.push({
+                quizId: this.quiz.id,
+                questionId: x.id,
+                answered: x.answered,
+            })
+        );
+
+        this.logger.log(this.quiz.questions);
+        this.mode = 1;
+    }
+
+    get filteredQuestions(): Question[] {
+        return this.quiz.questions
+            ? this.quiz.questions.slice(
+                  this.pager.index,
+                  this.pager.index + this.pager.size
+              )
+            : [];
+    }
+
+    private tick(): void {
+        const now = new Date();
+        const diff = (now.getTime() - this.startTime.getTime()) / 1000;
+
+        if (diff >= this.config.duration) {
+            this.onSubmit();
+        }
+
+        this.ellapsedTime = this.parseTime(diff);
+    }
+
+    private parseTime(totalSeconds: number): string {
+        let mins: string | number = Math.floor(totalSeconds / 60);
+        let secs: string | number = Math.round(totalSeconds % 60);
+
+        mins = (mins < 10 ? '0' : '') + mins;
+        secs = (secs < 10 ? '0' : '') + secs;
+
+        return `${mins}:${secs}`;
+    }
+}

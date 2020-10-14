@@ -1,0 +1,192 @@
+<div class="container-fluid" id="quiz">
+    <div class="row">
+        <h2
+            class="col-12 d-flex align-items-center justify-content-center font-weight-normal"
+        >
+            <img width="70" [src]="getImagePath(quiz?.name)" /> {{ quiz.name }}
+        </h2>
+    </div>
+    <hr />
+
+    <div class="container" *ngIf="mode === Mode.quiz && quiz">
+        <div *ngFor="let question of filteredQuestions">
+            <div class="row form-group">
+                <div class="col-6">
+                    <div class="badge">
+                        Question {{ pager.index + 1 }} of {{ pager.count }}
+                    </div>
+                </div>
+
+                <div class="col-6 text-right">
+                    <div *ngIf="config.duration" class="badge">
+                        Time: {{ ellapsedTime }} / {{ duration }}
+                    </div>
+                </div>
+            </div>
+
+            <div class="row form-group">
+                <h3 class="col-12 text-center title title{{ quizColor }}">
+                    {{ pager.index + 1 }}.
+                    <span [innerHTML]="question.name"></span>
+                </h3>
+            </div>
+
+            <div class="row form-group text-center options">
+                <div
+                    class="col-md-6 col-sm-12 col-xs-12"
+                    *ngFor="let option of question.options"
+                >
+                    <div class="option option{{ quizColor }}">
+                        <label
+                            class="font-weight-normal"
+                            [attr.for]="option.id"
+                        >
+                            <input
+                                id="{{ option.id }}"
+                                type="checkbox"
+                                class="questions"
+                                [(ngModel)]="option.selected"
+                                (change)="onSelect(question, option)"
+                            />
+
+                            <span>{{ option.name }}</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-center">
+                <button
+                    class="btn navigate{{ quizColor }}"
+                    *ngIf="config.allowBack"
+                    (click)="goTo(0)"
+                >
+                    <fa-icon [icon]="faAngleDoubleLeft"></fa-icon>
+                </button>
+
+                <button
+                    class="btn navigate{{ quizColor }}"
+                    (click)="goTo(pager.index - 1)"
+                    *ngIf="config.allowBack"
+                >
+                    <fa-icon [icon]="faAngleLeft"></fa-icon>
+                </button>
+
+                <button
+                    class="btn navigate{{ quizColor }}"
+                    (click)="goTo(pager.index + 1)"
+                >
+                    <fa-icon [icon]="faAngleRight"></fa-icon>
+                </button>
+
+                <button
+                    class="btn navigate{{ quizColor }}"
+                    (click)="goTo(pager.count - 1)"
+                    *ngIf="config.allowBack"
+                >
+                    <fa-icon [icon]="faAngleDoubleRight"></fa-icon>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="container text-center" *ngIf="mode === Mode.review">
+        <div class="row justify-content-center">
+            <div
+                class="col-md-3 col-sm-6 col-xs-12 cursor-pointer"
+                *ngFor="let question of quiz.questions; let index = index"
+            >
+                <div
+                    (click)="goTo(index)"
+                    class="review p-3 mb-2"
+                    [ngStyle]="{
+                        'background-color':
+                            isAnswered(question) === 'Answered'
+                                ? 'darkgrey'
+                                : 'white'
+                    }"
+                >
+                    {{ index + 1 }}. {{ isAnswered(question) }}
+
+                    <fa-icon
+                        *ngIf="isAnswered(question) === 'Answered'"
+                        [icon]="faCheck"
+                    ></fa-icon>
+
+                    <fa-icon
+                        *ngIf="isAnswered(question) !== 'Answered'"
+                        [icon]="faTimes"
+                    ></fa-icon>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="results container form-group text-center" *ngIf="mode === Mode.result">
+        <div class="row form-group"><h2 class="col-12">Results</h2></div>
+
+        <div
+            class="result col-12"
+            *ngFor="let question of quiz.questions; let index = index"
+        >
+            <div class="row">
+                <div class="col-12 text-white">
+                    <h5>{{ index + 1 }}. {{ question.name }}</h5>
+                </div>
+            </div>
+
+            <div class="row">
+                <div
+                    class="col-md-6 col-sm-12 col-xs-12 option m-0"
+                    *ngFor="let Option of question.options"
+                >
+                    <input
+                        id="{{ Option.id }}"
+                        type="checkbox"
+                        class="answers"
+                        disabled="disabled"
+                        [(ngModel)]="Option.selected"
+                    />
+
+                    <span>{{ Option.name }}</span>
+                </div>
+            </div>
+
+            <div class="row">
+                <div
+                    class="col-12 alert {{
+                        isCorrect(question) === 'correct'
+                            ? 'alert-success'
+                            : 'alert-danger'
+                    }}"
+                >
+                    Your answer is {{ isCorrect(question) }}.
+                </div>
+            </div>
+        </div>
+    </div>
+    <br /><br />
+
+    <div class="container text-center" *ngIf="mode !== Mode.result">
+        <button
+            class="btn main-buttons m-2"
+            *ngIf="mode === Mode.review"
+            (click)="mode = Mode.quiz"
+        >
+            Quiz
+        </button>
+
+        <button
+            class="btn main-buttons m-2"
+            *ngIf="mode === Mode.quiz"
+            (click)="mode = Mode.review"
+        >
+            Review
+        </button>
+
+        <button class="btn main-buttons m-2" (click)="onSubmit()">
+            Submit Quiz
+        </button>
+    </div>
+    <hr />
+</div>

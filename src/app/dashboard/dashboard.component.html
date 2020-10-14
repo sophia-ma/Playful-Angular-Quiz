@@ -1,0 +1,96 @@
+<div class="card-container reset-this">
+    <div class="card">
+        <input
+            #react
+            id="react-quiz"
+            name="quiz"
+            class="quiz"
+            type="radio"
+            checked="checked"
+            (click)="click()"
+        />
+        <div for="react-quiz" class="quiz-controls">
+            <h1>1</h1>
+            <div class="custom-button"></div>
+        </div>
+
+        <input
+            #angular
+            id="angular-quiz"
+            name="quiz"
+            class="quiz"
+            type="radio"
+            (click)="click()"
+        />
+        <div for="angular-quiz" class="quiz-controls">
+            <h1>2</h1>
+            <div class="custom-button"></div>
+        </div>
+
+        <input
+            #node
+            id="node-quiz"
+            name="quiz"
+            class="quiz"
+            type="radio"
+            (click)="click()"
+        />
+        <div for="node-quiz" class="quiz-controls">
+            <h1>3</h1>
+            <div class="custom-button"></div>
+        </div>
+
+        <input type="checkbox" class="read-more" />
+
+        <a class="read-more-btn">Read More</a>
+
+        <ng-container [ngSwitch]="quiz">
+            <ng-container *ngSwitchCase="Quiz.React">
+                <p>
+                    React is an open-source frontend JavaScript library which is
+                    used for building user interfaces, specifically for single
+                    page applications. This quiz series helps to build more
+                    understanding on React and JavaScript library for building
+                    user interfaces.
+                </p>
+            </ng-container>
+
+            <ng-container *ngSwitchCase="Quiz.Angular">
+                <p>
+                    Angular is a TypeScript-based open-source web application
+                    framework led by the Angular Team at Google and by a
+                    community of individuals and corporations. This quiz series
+                    helps to build more understanding on Angular and TypeScript
+                    library for building user interfaces.
+                </p>
+            </ng-container>
+
+            <ng-container *ngSwitchCase="Quiz.Node">
+                <p>
+                    Node.js is an open-source, cross-platform JavaScript
+                    run-time environment that executes JavaScript code
+                    server-side. Node.js lets developers use JavaScript for
+                    server-side scripting—running scripts server-side to produce
+                    dynamic web page content before the page is sent to the
+                    user's web browser.
+                </p>
+            </ng-container>
+        </ng-container>
+
+        <div class="logo-container">
+            <div class="logo"></div>
+            <div class="logo"></div>
+            <div class="logo"></div>
+        </div>
+
+        <div class="bubble">
+            <div class="content"></div>
+        </div>
+    </div>
+</div>
+
+<div>
+    <button class="start-btn btn" (click)="startQuiz()">
+        <h2 class="start-label">Start >></h2>
+    </button>
+</div>
