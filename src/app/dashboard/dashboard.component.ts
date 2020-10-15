@@ -12,9 +12,9 @@ enum Quiz {
     styleUrls: ['./dashboard.component.scss'],
 })
 export class DashboardComponent {
-    @ViewChild('react') reactRef: ElementRef;
-    @ViewChild('angular') angularRef: ElementRef;
-    @ViewChild('node') nodeRef: ElementRef;
+    @ViewChild('react', { static: true }) reactRef: ElementRef;
+    @ViewChild('angular', { static: true }) angularRef: ElementRef;
+    @ViewChild('node', { static: true }) nodeRef: ElementRef;
 
     quiz: Quiz = Quiz.React;
     Quiz = Quiz;
