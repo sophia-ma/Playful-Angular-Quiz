@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 
 import * as fromContainers from './containers';
+import * as fromComponents from './components';
 
 @NgModule({
     imports: [
@@ -22,6 +23,7 @@ import * as fromContainers from './containers';
     ],
     declarations: [
         ...fromContainers.containers,
+        ...fromComponents.components,
     ],
 })
 export class DashboardModule {}

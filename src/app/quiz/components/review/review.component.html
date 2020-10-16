@@ -1,0 +1,29 @@
+<div class="row justify-content-center">
+    <div
+        class="col-md-3 col-sm-6 col-xs-12 cursor-pointer"
+        *ngFor="let question of quiz?.questions; let index = index"
+    >
+        <div
+            (click)="navigate(index)"
+            class="review p-3 mb-2"
+            [ngStyle]="{
+                'background-color':
+                    isAnswered(question) === QuestionStatus.Answered
+                        ? '#c35353'
+                        : '#dad8d8'
+            }"
+        >
+            {{ index + 1 }}. {{ isAnswered(question) }}
+
+            <i
+                *ngIf="isAnswered(question) === QuestionStatus.Answered"
+                class="fas fa-check"
+            ></i>
+
+            <i
+                *ngIf="isAnswered(question) !== QuestionStatus.Answered"
+                class="fas fa-times"
+            ></i>
+        </div>
+    </div>
+</div>

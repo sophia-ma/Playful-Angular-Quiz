@@ -25,6 +25,10 @@ body {
         linear-gradient(to bottom, $dashboard-background-colour, #fff);
 }
 
+.cursor-pointer {
+    cursor: pointer;
+}
+
 .reset-this * {
     animation: none;
     animation-delay: 0;

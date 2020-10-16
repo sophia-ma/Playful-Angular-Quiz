@@ -1,7 +1,7 @@
 import { ActivatedRoute } from '@angular/router';
 import { Component, OnInit, Renderer2 } from '@angular/core';
 
-import { Option, Question, Quiz, QuizConfig, QuizPath } from '../../models';
+import { Option, Pager, Question, Quiz, QuizConfig, QuizPath } from '../../models';
 import { Mode, QuestionStatus } from '../../enums';
 import { LoggerService } from '../../services/logger.service';
 import { QuizService } from '../../services/quiz.service';
@@ -33,7 +33,7 @@ export class QuizComponent implements OnInit {
         showPager: true,
         theme: 'none',
     };
-    pager = {
+    pager: Pager = {
         index: 0,
         size: 1,
         count: 1,
@@ -72,12 +72,13 @@ export class QuizComponent implements OnInit {
             }, 1000);
 
             this.duration = this.parseTime(this.config.duration);
+
             this.quizColor = `-${
                 this.quiz && this.quiz.name.toLowerCase().replace('.', '-')
             }`;
         });
 
-        this.mode = 0;
+        this.mode = Mode.quiz;
     }
 
     getImagePath(quizPath: string): string {
@@ -107,14 +108,8 @@ export class QuizComponent implements OnInit {
     navigate(index: number): void {
         if (index >= 0 && index < this.pager.count) {
             this.pager.index = index;
-            this.mode = 0;
+            this.mode = Mode.quiz;
         }
-    }
-
-    isAnswered(question: Question): string {
-        return question.options.find((x) => x.selected)
-            ? QuestionStatus.Answered
-            : QuestionStatus.NotAnswered;
     }
 
     isCorrect(question: Question): string {
@@ -135,7 +130,7 @@ export class QuizComponent implements OnInit {
         );
 
         this.logger.log(this.quiz.questions);
-        this.mode = 1;
+        this.mode = Mode.result;
     }
 
     get filteredQuestions(): Question[] {
