@@ -370,7 +370,7 @@ $angular-glob-background        : #fe8d58;
                     0 0 0 10px #fff;
 
                 &:before {
-                    content: url(../../assets/images/react.png);
+                    content: url(../../../assets/images/react.png);
 
                     position: absolute;
                     left: 50%;
@@ -389,7 +389,7 @@ $angular-glob-background        : #fe8d58;
                     box-shadow: inset 0 0 0 5px #fff, 0 0 0 5px $angular,
                         0 0 0 10px #fff;
                     &:before {
-                        content: url(../../assets/images/angular-white.png);
+                        content: url(../../../assets/images/angular-white.png);
                     }
                 }
 
@@ -398,7 +398,7 @@ $angular-glob-background        : #fe8d58;
                     box-shadow: inset 0 0 0 5px #fff, 0 0 0 5px $node,
                         0 0 0 10px #fff;
                     &:before {
-                        content: url(../../assets/images/node.js.png);
+                        content: url(../../../assets/images/node.js.png);
                     }
                 }
             }

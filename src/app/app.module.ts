@@ -4,8 +4,6 @@ import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-
 import { AppComponent } from './app.component';
 import { DashboardModule } from './dashboard/dashboard.module';
 
@@ -17,7 +15,6 @@ import { DashboardModule } from './dashboard/dashboard.module';
         BrowserModule,
         DashboardModule,
         HttpClientModule,
-        FontAwesomeModule,
         RouterModule.forRoot([
             { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
             { path: '**', redirectTo: 'dashboard', pathMatch: 'full' },

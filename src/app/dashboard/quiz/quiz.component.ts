@@ -9,23 +9,8 @@ import {
     Quiz,
     QuizConfig,
     QuizPath,
-} from '../../models/index';
-
-import {
-    IconDefinition,
-    faAngleLeft,
-    faAngleRight,
-    faAngleDoubleLeft,
-    faAngleDoubleRight,
-    faCheck,
-    faTimes,
-} from '@fortawesome/free-solid-svg-icons';
-
-enum Mode {
-    'quiz',
-    'result',
-    'review',
-}
+} from '../../models';
+import { Mode, QuestionStatus } from '../../enums';
 
 @Component({
     selector: 'app-quiz',
@@ -33,15 +18,9 @@ enum Mode {
     styleUrls: ['./quiz.component.scss'],
 })
 export class QuizComponent implements OnInit {
-    faCheck: IconDefinition = faCheck;
-    faTimes: IconDefinition = faTimes;
-    faAngleLeft: IconDefinition = faAngleLeft;
-    faAngleRight: IconDefinition = faAngleRight;
-    faAngleDoubleLeft: IconDefinition = faAngleDoubleLeft;
-    faAngleDoubleRight: IconDefinition = faAngleDoubleRight;
-
     quizes: QuizPath[];
     Mode = Mode;
+    QuestionStatus = QuestionStatus;
     mode: Mode = Mode.quiz;
     quizPath: string;
     quizColor: string;
@@ -117,7 +96,7 @@ export class QuizComponent implements OnInit {
         return '';
     }
 
-    onSelect(question: Question, option: Option): void {
+    onQuestionSelect(question: Question, option: Option): void {
         if (question.questionTypeId === 1) {
             question.options.forEach((x) => {
                 if (x.id !== option.id) {
@@ -127,11 +106,11 @@ export class QuizComponent implements OnInit {
         }
 
         if (this.config.autoMove) {
-            this.goTo(this.pager.index + 1);
+            this.navigate(this.pager.index + 1);
         }
     }
 
-    goTo(index: number): void {
+    navigate(index: number): void {
         if (index >= 0 && index < this.pager.count) {
             this.pager.index = index;
             this.mode = 0;
@@ -140,8 +119,8 @@ export class QuizComponent implements OnInit {
 
     isAnswered(question: Question): string {
         return question.options.find((x) => x.selected)
-            ? 'Answered'
-            : 'Not Answered';
+            ? QuestionStatus.Answered
+            : QuestionStatus.NotAnswered;
     }
 
     isCorrect(question: Question): string {
@@ -150,7 +129,7 @@ export class QuizComponent implements OnInit {
             : 'wrong';
     }
 
-    onSubmit(): void {
+    onQuizSubmit(): void {
         const answers = [];
 
         this.quiz.questions.forEach((x) =>
@@ -179,7 +158,7 @@ export class QuizComponent implements OnInit {
         const diff = (now.getTime() - this.startTime.getTime()) / 1000;
 
         if (diff >= this.config.duration) {
-            this.onSubmit();
+            this.onQuizSubmit();
         }
 
         this.ellapsedTime = this.parseTime(diff);
