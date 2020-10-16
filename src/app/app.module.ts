@@ -5,8 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
-import { DashboardModule } from './dashboard/dashboard.module';
-
+import { DashboardModule } from './quiz/dashboard.module';
 
 @NgModule({
     declarations: [AppComponent],

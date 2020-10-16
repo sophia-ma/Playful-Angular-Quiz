@@ -1,16 +1,10 @@
 import { ActivatedRoute } from '@angular/router';
 import { Component, OnInit, Renderer2 } from '@angular/core';
 
-import { QuizService } from '../../services/quiz.service';
-import { LoggerService } from '../../services/logger.service';
-import {
-    Option,
-    Question,
-    Quiz,
-    QuizConfig,
-    QuizPath,
-} from '../../models';
+import { Option, Question, Quiz, QuizConfig, QuizPath } from '../../models';
 import { Mode, QuestionStatus } from '../../enums';
+import { LoggerService } from '../../services/logger.service';
+import { QuizService } from '../../services/quiz.service';
 
 @Component({
     selector: 'app-quiz',

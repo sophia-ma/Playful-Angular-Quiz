@@ -3,8 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 
-import { QuizComponent } from './quiz/quiz.component';
-import { DashboardComponent } from './dashboard/dashboard.component';
+import * as fromContainers from './containers';
 
 @NgModule({
     imports: [
@@ -13,17 +12,16 @@ import { DashboardComponent } from './dashboard/dashboard.component';
         RouterModule.forChild([
             {
                 path: 'dashboard',
-                component: DashboardComponent,
+                component: fromContainers.DashboardComponent,
             },
             {
                 path: 'quiz/:id',
-                component: QuizComponent,
+                component: fromContainers.QuizComponent,
             },
         ]),
     ],
     declarations: [
-        DashboardComponent,
-        QuizComponent,
+        ...fromContainers.containers,
     ],
 })
 export class DashboardModule {}
