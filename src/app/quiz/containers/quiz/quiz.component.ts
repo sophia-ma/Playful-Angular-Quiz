@@ -1,8 +1,8 @@
 import { ActivatedRoute } from '@angular/router';
 import { Component, OnInit, Renderer2 } from '@angular/core';
 
-import { Option, Pager, Question, Quiz, QuizConfig, QuizPath } from '../../models';
 import { Mode, QuestionStatus } from '../../enums';
+import { Pager, Quiz, QuizConfig, QuizPath } from '../../models';
 import { QuizService } from '../../services/quiz.service';
 
 @Component({
@@ -45,7 +45,7 @@ export class QuizComponent implements OnInit {
     constructor(
         private quizService: QuizService,
         private route: ActivatedRoute,
-        private renderer: Renderer2,
+        private renderer: Renderer2
     ) {
         this.renderer.removeClass(document.body, 'dashboard-background');
     }
@@ -89,20 +89,6 @@ export class QuizComponent implements OnInit {
         return '';
     }
 
-    onQuestionSelect(question: Question, option: Option): void {
-        if (question.questionTypeId === 1) {
-            question.options.forEach((x) => {
-                if (x.id !== option.id) {
-                    x.selected = false;
-                }
-            });
-        }
-
-        if (this.config.autoMove) {
-            this.navigate(this.pager.index + 1);
-        }
-    }
-
     navigate(index: number): void {
         if (index >= 0 && index < this.pager.count) {
             this.pager.index = index;
@@ -122,15 +108,6 @@ export class QuizComponent implements OnInit {
         );
 
         this.mode = Mode.result;
-    }
-
-    get filteredQuestions(): Question[] {
-        return this.quiz.questions
-            ? this.quiz.questions.slice(
-                  this.pager.index,
-                  this.pager.index + this.pager.size
-              )
-            : [];
     }
 
     private tick(): void {

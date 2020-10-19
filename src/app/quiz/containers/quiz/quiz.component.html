@@ -1,4 +1,4 @@
-<div class="container-fluid" id="quiz">
+<div class="container-fluid quiz">
     <div class="row">
         <h2
             class="col-12 d-flex align-items-center justify-content-center font-weight-normal"
@@ -8,86 +8,16 @@
     </div>
     <hr />
 
-    <div class="container" *ngIf="mode === Mode.quiz && quiz">
-        <div *ngFor="let question of filteredQuestions">
-            <div class="row form-group">
-                <div class="col-6">
-                    <div class="badge">
-                        Question {{ pager?.index + 1 }} of {{ pager?.count }}
-                    </div>
-                </div>
-
-                <div class="col-6 text-right">
-                    <div *ngIf="config?.duration" class="badge">
-                        <i class="fas fa-hourglass-half fa-1x"></i>
-                        {{ ellapsedTime }} / {{ duration }}
-                    </div>
-                </div>
-            </div>
-
-            <div class="row form-group">
-                <h3 class="col-12 text-center title title{{ quizColor }}">
-                    {{ pager?.index + 1 }}.
-                    <span [innerHTML]="question?.name"></span>
-                </h3>
-            </div>
-
-            <div class="row form-group text-center options">
-                <div
-                    class="col-md-6 col-sm-12"
-                    *ngFor="let option of question?.options"
-                >
-                    <div class="option option{{ quizColor }}">
-                        <label
-                            class="font-weight-normal"
-                            [attr.for]="option?.id"
-                        >
-                            <input
-                                id="{{ option?.id }}"
-                                type="checkbox"
-                                class="questions"
-                                [(ngModel)]="option.selected"
-                                (change)="onQuestionSelect(question, option)"
-                            />
-
-                            <span>{{ option?.name }}</span>
-                        </label>
-                    </div>
-                </div>
-            </div>
-
-            <div class="text-center">
-                <button
-                    *ngIf="config?.allowBack"
-                    class="btn navigate{{ quizColor }}"
-                    (click)="navigate(0)"
-                >
-                    <i class="fas fa-angle-double-left"></i>
-                </button>
-
-                <button
-                    *ngIf="config?.allowBack"
-                    class="btn navigate{{ quizColor }}"
-                    (click)="navigate(pager?.index - 1)"
-                >
-                    <i class="fas fa-angle-left"></i>
-                </button>
-
-                <button
-                    class="btn navigate{{ quizColor }}"
-                    (click)="navigate(pager?.index + 1)"
-                >
-                    <i class="fas fa-angle-right"></i>
-                </button>
-
-                <button
-                    class="btn navigate{{ quizColor }}"
-                    (click)="navigate(pager?.count - 1)"
-                >
-                    <i class="fas fa-angle-double-right"></i>
-                </button>
-            </div>
-        </div>
+    <div class="container" *ngIf="mode === Mode.quiz">
+        <app-question
+            [quiz]="quiz"
+            [config]="config"
+            [pager]="pager"
+            [ellapsedTime]="ellapsedTime"
+            [duration]="duration"
+            [quizColor]="quizColor"
+            (goTo)="navigate($event)"
+        ></app-question>
     </div>
 
     <div class="container text-center" *ngIf="mode === Mode.review">
