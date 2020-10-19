@@ -1,0 +1,44 @@
+@import "~src/scss/variables";
+
+.results {
+    background-color: $button-colour;
+    border-radius: 19px;
+    font-size: 20px;
+    padding-top: 16px;
+    opacity: 0.9;
+    margin-bottom: 1rem;
+
+    .option {
+        margin: 5px;
+        opacity: 1;
+        color: #fff;
+        padding: 1rem;
+        overflow: auto;
+        font-weight: 600;
+        border-radius: 19px;
+        cursor: default;
+
+        &:not(.selected) {
+            opacity: 0.6;
+        }
+
+        .answers {
+            display: none;
+        }
+
+        .answers:checked + span {
+            border-bottom: 2px solid #fff;
+        }
+    }
+}
+
+@media only screen and (max-width: 480px) {
+    .option,
+    .alert {
+        font-size: 16px !important;
+    }
+
+    .option {
+        padding: 6px !important;
+    }
+}

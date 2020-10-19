@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 
-import { Question, Quiz } from '../../models';
 import { QuestionStatus } from '../../enums';
+import { Question } from '../../models';
 
 @Component({
     selector: 'app-review',
@@ -9,7 +9,7 @@ import { QuestionStatus } from '../../enums';
     styleUrls: ['./review.component.scss'],
 })
 export class ReviewComponent {
-    @Input() quiz: Quiz;
+    @Input() questions: Question;
     @Output() goTo: EventEmitter<number> = new EventEmitter<number>();
 
     QuestionStatus = QuestionStatus;

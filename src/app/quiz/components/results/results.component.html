@@ -1,0 +1,40 @@
+<div
+    class="results col-12"
+    *ngFor="let question of questions; let index = index"
+>
+    <div class="row">
+        <div class="col-12 text-white">
+            <p>{{ index + 1 }}. {{ question?.name }}</p>
+        </div>
+    </div>
+
+    <div class="row">
+        <div
+            class="col-md-6 col-sm-12 option m-0"
+            [ngClass]="{ selected: option?.selected }"
+            *ngFor="let option of question.options"
+        >
+            <input
+                id="{{ option?.id }}"
+                type="checkbox"
+                class="answers"
+                disabled="disabled"
+                [(ngModel)]="option.selected"
+            />
+
+            <span>{{ option?.name }}</span>
+        </div>
+    </div>
+
+    <div class="row">
+        <div
+            class="col-12 alert p-0 {{
+                isCorrect(question) === 'correct'
+                    ? 'alert-success'
+                    : 'alert-danger'
+            }}"
+        >
+            Your answer is {{ isCorrect(question) }}.
+        </div>
+    </div>
+</div>

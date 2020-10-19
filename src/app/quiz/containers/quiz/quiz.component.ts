@@ -3,7 +3,6 @@ import { Component, OnInit, Renderer2 } from '@angular/core';
 
 import { Option, Pager, Question, Quiz, QuizConfig, QuizPath } from '../../models';
 import { Mode, QuestionStatus } from '../../enums';
-import { LoggerService } from '../../services/logger.service';
 import { QuizService } from '../../services/quiz.service';
 
 @Component({
@@ -45,7 +44,6 @@ export class QuizComponent implements OnInit {
 
     constructor(
         private quizService: QuizService,
-        private logger: LoggerService,
         private route: ActivatedRoute,
         private renderer: Renderer2,
     ) {
@@ -112,12 +110,6 @@ export class QuizComponent implements OnInit {
         }
     }
 
-    isCorrect(question: Question): string {
-        return question.options.every((x) => x.selected === x.isAnswer)
-            ? 'correct'
-            : 'wrong';
-    }
-
     onQuizSubmit(): void {
         const answers = [];
 
@@ -129,7 +121,6 @@ export class QuizComponent implements OnInit {
             })
         );
 
-        this.logger.log(this.quiz.questions);
         this.mode = Mode.result;
     }
 

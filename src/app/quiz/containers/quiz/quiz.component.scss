@@ -1,4 +1,4 @@
-@import '~src/scss/variables';
+@import "~src/scss/variables";
 
 #quiz {
     .title {
@@ -6,7 +6,7 @@
         padding: 1rem;
         overflow: auto;
         font-weight: 600;
-        border-radius: 1rem;
+        border-radius: 19px;
         background-color: #fff;
 
         &.title-react {
@@ -30,10 +30,10 @@
         overflow: auto;
         font-size: 20px;
         font-weight: 600;
-        border-radius: 1rem;
+        border-radius: 19px;
 
         &:hover {
-            opacity: 0.4;
+            opacity: 0.6;
             color: #000;
         }
 
@@ -41,7 +41,7 @@
             text-align: center;
             padding: 1rem 0px;
             display: block;
-            border-radius: 1rem;
+            border-radius: 19px;
             font-weight: 600;
         }
 
@@ -49,18 +49,13 @@
             display: initial;
         }
 
-        input.questions,
-        input.answers {
+        .questions {
             display: none;
         }
 
-        input.questions:checked + span {
+        .questions:checked + span {
             background-color: #fff;
             color: black;
-        }
-
-        input.answers:checked + span {
-            border-bottom: 2px solid #fff;
         }
 
         &.option-react {
@@ -124,18 +119,6 @@
         background-color: $node;
         color: #fff;
     }
-
-    div.result {
-        background-color: $button-colour;
-        border-radius: 1rem;
-        font-size: 1.25rem;
-        padding-top: 16px;
-        opacity: 0.9;
-        margin-bottom: 1rem;
-        .alert {
-            padding: 0;
-        }
-    }
 }
 
 @media only screen and (max-width: 480px) {
@@ -143,16 +126,19 @@
     .h1 {
         font-size: 22px;
     }
+
     h2,
     .h2 {
         font-size: 20px;
     }
+
     h3,
     .h3 {
         font-size: 18px;
     }
+
     .option {
-        font-size: 16px;
-        padding: 6px;
+        font-size: 16px !important;
+        padding: 6px !important;
     }
 }
