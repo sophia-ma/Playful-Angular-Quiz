@@ -26,4 +26,4 @@ import * as fromComponents from './components';
         ...fromComponents.components,
     ],
 })
-export class DashboardModule {}
+export class QuizModule {}

@@ -5,14 +5,14 @@ import { FormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
-import { DashboardModule } from './quiz/dashboard.module';
+import { QuizModule } from './quiz/quiz.module';
 
 @NgModule({
     declarations: [AppComponent],
     imports: [
         FormsModule,
         BrowserModule,
-        DashboardModule,
+        QuizModule,
         HttpClientModule,
         RouterModule.forRoot([
             { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
