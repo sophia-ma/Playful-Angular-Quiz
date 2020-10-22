@@ -1,9 +1,10 @@
 import { ActivatedRoute } from '@angular/router';
 import { Component, OnInit, Renderer2 } from '@angular/core';
 
-import { Mode, QuestionStatus } from '../../enums';
+import { Mode, QuestionStatus, QuizType } from '../../enums';
 import { Pager, Quiz, QuizConfig, QuizPath } from '../../models';
 import { QuizService } from '../../services/quiz.service';
+import { components } from '../../components';
 
 @Component({
     selector: 'app-quiz',
@@ -41,6 +42,7 @@ export class QuizComponent implements OnInit {
     startTime: Date;
     ellapsedTime: string = '00:00';
     duration: string = '';
+    quizNotFound = false;
 
     constructor(
         private quizService: QuizService,
@@ -51,10 +53,15 @@ export class QuizComponent implements OnInit {
     }
 
     ngOnInit() {
-        const quizId = this.route.snapshot.params['id'];
+        const quizTypeId: QuizType = +this.route.snapshot.params['id'];
 
         this.quizes = this.quizService.getAll();
-        this.quizPath = this.quizes[quizId].id;
+
+        const quiz = this.quizes.find((x: QuizPath) => x.quizType === quizTypeId);
+
+        this.quizPath = quiz?.id ?? null;
+        // TODO: Navigate to a 404 page
+        this.quizNotFound = !this.quizPath;
 
         this.loadQuiz(this.quizPath);
     }

@@ -1,11 +1,7 @@
 import { Component, ViewChild, ElementRef, Renderer2 } from '@angular/core';
 import { Router } from '@angular/router';
+import { QuizType } from '../../enums';
 
-enum Quiz {
-    React,
-    Angular,
-    Node,
-}
 @Component({
     selector: 'app-dashboard',
     templateUrl: './dashboard.component.html',
@@ -16,8 +12,8 @@ export class DashboardComponent {
     @ViewChild('angular', { static: true }) angularRef: ElementRef;
     @ViewChild('node', { static: true }) nodeRef: ElementRef;
 
-    quiz: Quiz = Quiz.React;
-    Quiz = Quiz;
+    quiz: QuizType = QuizType.React;
+    Quiz = QuizType;
 
     constructor(
         public router: Router,
@@ -28,15 +24,15 @@ export class DashboardComponent {
 
     click(): void {
         if (this.reactRef.nativeElement.checked) {
-            this.quiz = Quiz.React;
+            this.quiz = QuizType.React;
         }
 
         if (this.angularRef.nativeElement.checked) {
-            this.quiz = Quiz.Angular;
+            this.quiz = QuizType.Angular;
         }
 
         if (this.nodeRef.nativeElement.checked) {
-            this.quiz = Quiz.Node;
+            this.quiz = QuizType.Node;
         }
     }
 

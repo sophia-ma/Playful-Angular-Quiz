@@ -1,57 +1,65 @@
 <div class="container-fluid quiz">
-    <div class="row">
-        <h2
-            class="col-12 d-flex align-items-center justify-content-center font-weight-normal"
-        >
-            <img width="70" [src]="getImagePath(quiz?.name)" /> {{ quiz?.name }}
-        </h2>
-    </div>
-    <hr />
+    <ng-container *ngIf="!quizNotFound; else notFound">
+        <div class="row">
+            <h2
+                class="col-12 d-flex align-items-center justify-content-center font-weight-normal"
+            >
+                <img width="70" [src]="getImagePath(quiz?.name)" />
+                {{ quiz?.name }}
+            </h2>
+        </div>
+        <hr />
 
-    <div class="container" *ngIf="mode === Mode.quiz">
-        <app-question
-            [quiz]="quiz"
-            [config]="config"
-            [pager]="pager"
-            [ellapsedTime]="ellapsedTime"
-            [duration]="duration"
-            [quizColor]="quizColor"
-            (goTo)="navigate($event)"
-        ></app-question>
-    </div>
+        <div class="container" *ngIf="mode === Mode.quiz">
+            <app-question
+                [quiz]="quiz"
+                [config]="config"
+                [pager]="pager"
+                [ellapsedTime]="ellapsedTime"
+                [duration]="duration"
+                [quizColor]="quizColor"
+                (goTo)="navigate($event)"
+            ></app-question>
+        </div>
 
-    <div class="container text-center" *ngIf="mode === Mode.review">
-        <app-review
-            [questions]="quiz?.questions"
-            (goTo)="navigate($event)"
-        ></app-review>
-    </div>
+        <div class="container text-center" *ngIf="mode === Mode.review">
+            <app-review
+                [questions]="quiz?.questions"
+                (goTo)="navigate($event)"
+            ></app-review>
+        </div>
 
-    <div class="container text-center" *ngIf="mode === Mode.result">
-        <app-results [questions]="quiz?.questions"></app-results>
-    </div>
-    <br /><br />
+        <div class="container text-center" *ngIf="mode === Mode.result">
+            <app-results [questions]="quiz?.questions"></app-results>
+        </div>
+        <br /><br />
 
-    <div class="container text-center" *ngIf="mode !== Mode.result">
-        <button
-            *ngIf="mode === Mode.review"
-            class="btn main-buttons m-2"
-            (click)="mode = Mode.quiz"
-        >
-            <i class="fas fa-arrow-left"></i>
-        </button>
+        <div class="container text-center" *ngIf="mode !== Mode.result">
+            <button
+                *ngIf="mode === Mode.review"
+                class="btn main-buttons m-2"
+                (click)="mode = Mode.quiz"
+            >
+                <i class="fas fa-arrow-left"></i>
+            </button>
 
-        <button
-            *ngIf="mode === Mode.quiz && config?.allowReview"
-            class="btn main-buttons m-2"
-            (click)="mode = Mode.review"
-        >
-            Review
-        </button>
+            <button
+                *ngIf="mode === Mode.quiz && config?.allowReview"
+                class="btn main-buttons m-2"
+                (click)="mode = Mode.review"
+            >
+                Review
+            </button>
 
-        <button class="btn main-buttons m-2" (click)="onQuizSubmit()">
-            Submit Quiz
-        </button>
-    </div>
-    <hr />
+            <button class="btn main-buttons m-2" (click)="onQuizSubmit()">
+                Submit Quiz
+            </button>
+        </div>
+        <hr />
+    </ng-container>
+
+    <!-- Temp till a 404 page will be designed -->
+    <ng-template #notFound>
+        <div class="alert alert-danger" role="alert">404 Quiz Not Found</div>
+    </ng-template>
 </div>
